@@ -11,11 +11,15 @@ const (
 )
 
 type Game struct {
+	view Viewport
+
 	bodies []*Body
 }
 
 func NewGame() *Game {
-	g := &Game{}
+	g := &Game{
+		view: NewViewport(),
+	}
 
 	g.bodies = []*Body{
 		NewBody(g, 0),
@@ -30,7 +34,7 @@ func (g *Game) Update() (err error) {
 
 func (g Game) Draw(screen *ebiten.Image) {
 	for _, b := range g.bodies {
-		b.Draw(screen)
+		g.view.DrawToScreen(screen, b)
 	}
 }
 

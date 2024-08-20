@@ -34,6 +34,34 @@ func NewBody(game *Game, id int) *Body {
 	return b
 }
 
+func (b *Body) Overlaps(o []image.Rectangle) bool {
+	return DefaultHitboxOverlaps(b, o)
+}
+
+func (b *Body) Origin() image.Point {
+	return b.pos
+}
+
+func (b *Body) Size() image.Point {
+	return b.image.Bounds().Size()
+}
+
+func (b *Body) GetHitbox() []image.Rectangle {
+	return []image.Rectangle{b.image.Bounds()}
+}
+
+func (b Body) DrawAt(screen *ebiten.Image, point image.Point) {
+	if b.imageDirty {
+		b.genImage()
+	}
+
+	options := ebiten.DrawImageOptions{}
+	options.GeoM.Translate(float64(point.X), float64(point.Y))
+	options.GeoM.Translate(-50, -50) //centre circle by subtracting radius
+
+	screen.DrawImage(b.image, &options)
+}
+
 func (b *Body) genImage() {
 	radius := 50
 	img := ebiten.NewImage(radius*2, radius*2)
@@ -43,16 +71,4 @@ func (b *Body) genImage() {
 	b.image = img
 
 	b.imageDirty = false
-}
-
-func (b Body) Draw(screen *ebiten.Image) {
-	if b.imageDirty {
-		b.genImage()
-	}
-
-	options := ebiten.DrawImageOptions{}
-	options.GeoM.Translate(float64(b.pos.X), float64(b.pos.Y))
-	options.GeoM.Translate(-50, -50) //centre circle by subtracting radius
-
-	screen.DrawImage(b.image, &options)
 }
