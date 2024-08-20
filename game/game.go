@@ -11,10 +11,17 @@ const (
 )
 
 type Game struct {
+	bodies []*Body
 }
 
 func NewGame() *Game {
-	return &Game{}
+	g := &Game{}
+
+	g.bodies = []*Body{
+		NewBody(g, 0),
+	}
+
+	return g
 }
 
 func (g *Game) Update() (err error) {
@@ -22,6 +29,9 @@ func (g *Game) Update() (err error) {
 }
 
 func (g Game) Draw(screen *ebiten.Image) {
+	for _, b := range g.bodies {
+		b.Draw(screen)
+	}
 }
 
 func (g Game) Layout(actualWidth, actualHeight int) (screenWidth, screenHeight int) {
