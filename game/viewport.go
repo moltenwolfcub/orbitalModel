@@ -41,9 +41,12 @@ type Viewport struct {
 
 func NewViewport() Viewport {
 	return Viewport{rect: image.Rectangle{
-		Max: image.Point{
-			X: WindowWidth,
-			Y: WindowHeight,
+		Min: image.Point{
+			X: -WindowWidth / 2,
+			Y: -WindowHeight / 2,
+		}, Max: image.Point{
+			X: WindowWidth / 2,
+			Y: WindowHeight / 2,
 		},
 	}}
 }

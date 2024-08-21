@@ -25,7 +25,7 @@ func NewBody(game *Game, id int) *Body {
 	b := &Body{
 		game:  game,
 		id:    id,
-		pos:   image.Pt(100, 100),
+		pos:   image.Pt(0, 0),
 		delta: image.Pt(0, 0),
 		color: color.RGBA{0, 255, 255, 255},
 	}
