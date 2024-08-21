@@ -1,7 +1,10 @@
 package game
 
 import (
+	"image"
+
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 const (
@@ -11,7 +14,8 @@ const (
 )
 
 type Game struct {
-	view Viewport
+	view         Viewport
+	lastMousePos image.Point
 
 	bodies []*Body
 }
@@ -29,6 +33,18 @@ func NewGame() *Game {
 }
 
 func (g *Game) Update() (err error) {
+	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButton1) {
+		g.lastMousePos = image.Pt(ebiten.CursorPosition())
+	}
+
+	if ebiten.IsMouseButtonPressed(ebiten.MouseButton1) {
+		thisPos := image.Pt(ebiten.CursorPosition())
+		change := g.lastMousePos.Sub(thisPos)
+
+		g.view.rect = g.view.rect.Add(change)
+
+		g.lastMousePos = thisPos
+	}
 	return nil
 }
 
